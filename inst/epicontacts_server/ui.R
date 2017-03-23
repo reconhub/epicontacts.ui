@@ -1,7 +1,7 @@
 library(shiny)
 library(visNetwork)
 library(shiny)
-shinyUI(navbarPage(
+navbarPage(
   "EpiContacts.ui",
   tabPanel(
     "Data",
@@ -58,4 +58,4 @@ shinyUI(navbarPage(
   ),
   tabPanel("Network plot",
            visNetworkOutput("netplot"))
-))
+)
