@@ -30,8 +30,8 @@ guess_coltypes <- function(df) {
 }
 shinyServer(function(input, output, session) {
   
-  linelist_data <- shinyHelpers::dataimportServer("import_linelist")
-  contact_data <- shinyHelpers::dataimportServer("import_contact_data")
+  linelist_data <- shinyHelpers::dataimportServer("import_linelist", sampleDatasets = linelist_examples)
+  contact_data <- shinyHelpers::dataimportServer("import_contact_data", sampleDatasets = contacts_examples)
   
   base_data <- reactive({
     linelist <- guess_coltypes(linelist_data())
@@ -156,39 +156,6 @@ shinyServer(function(input, output, session) {
                stringsAsFactors = FALSE)
   })
   
-  pairwise_dgamma_est <- reactive({
-    # distcrete gamma ML estimation based on Rich FitzJohn's distcrete package. License MIT 2016
-    data <- pairwise_dist()
-    data <- data[!is.na(data)]
-    deviance <- function(param) {
-      d <- distcrete("gamma", interval = 1L, param[1], param[2])$d
-      -2 * sum(d(data, log = TRUE))
-    }
-    optim(c(1,1), deviance)
-  })
-  
-  pairwise_dexp_est <- reactive({
-    # distcrete exp ML estimation based on Rich FitzJohn's distcrete package. License MIT 2016
-    data <- pairwise_dist()
-    data <- data[!is.na(data)]
-    ll <- function(param) {
-      d <- distcrete("exp", interval = 1L, param)$d
-      sum(d(data, log = TRUE))
-    }
-    optimise(ll, c(0, 20), maximum = TRUE)
-  })
-  
-  pairwise_density_fun <- reactive({
-    fun_key <- input$pairwise_est_density_fun
-    if (fun_key == "dgamma") {
-      est <- pairwise_dgamma_est()
-      distcrete("gamma", interval = 1L, est$par[1], est$par[2])$d
-    } else if (fun_key == "dexp") {
-      est <- pairwise_dexp_est()
-      distcrete("exp", interval = 1L, est$maximum)$d
-    }
-  })
-  
   output$pairwise_distribution_histogram <- renderPlot({
     column <- input$pairwise_dist_col
     plot_data <- pairwise_plot_data()
@@ -197,27 +164,9 @@ shinyServer(function(input, output, session) {
       geom_vline(xintercept = mean_dist) + 
       xlab(column) +
       ggtitle(paste0("Histogram pairwise distances of column '", column, "'")) + 
-      ylab("value")
-    if (input$pairwise_est_density) {
-      dgam <- pairwise_density_fun()
-      p <- p + 
-        stat_function(fun = dgam, colour = "red") +                    
-        geom_histogram(aes(y = ..density..), alpha = 0.4, bins = input$pairwise_dist_histogram_bins)
-    } else {
-      p <- p + geom_histogram(bins = input$pairwise_dist_histogram_bins)
-    }
+      ylab("value") +
+      geom_histogram(bins = input$pairwise_dist_histogram_bins)
     p
-  })
-  
-  output$pairwise_dist_optim_output <- renderPrint({
-    if (input$pairwise_est_density) {
-      fun_key <- input$pairwise_est_density_fun
-      if (fun_key == "dgamma") {
-        pairwise_dgamma_est()
-      } else if (fun_key == "dexp") {
-        pairwise_dexp_est()
-      }
-    }
   })
   
   output$pairwise_sample_mean <- renderText({

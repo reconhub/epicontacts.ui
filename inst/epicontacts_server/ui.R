@@ -1,7 +1,6 @@
 library(shiny)
 library(visNetwork)
 library(shiny)
-
 shinyUI(navbarPage(
   "EpiContacts.ui",
   tabPanel(
@@ -10,9 +9,9 @@ shinyUI(navbarPage(
       column(6,
              h2("Load data"),
              h3("Linelist data"),
-             shinyHelpers::dataimportUI("import_linelist"),
+             shinyHelpers::dataimportUI("import_linelist", sampleDatasets = linelist_examples),
              h3("Contact data"),
-             shinyHelpers::dataimportUI("import_contact_data"),
+             shinyHelpers::dataimportUI("import_contact_data", sampleDatasets = contacts_examples),
              checkboxInput("directed", "Is This A Directed Network ?", value = TRUE)),
       column(6,
              h2("Subset data"),
@@ -55,13 +54,7 @@ shinyUI(navbarPage(
     p(
       "Sample standard deviation: ",
       textOutput("pairwise_sample_sd", inline = TRUE)
-    ),
-    hr(),
-    h3("Estimate distribution parameters"),
-    checkboxInput("pairwise_est_density", "Estimate a distribution parameters", value = FALSE),
-    selectInput("pairwise_est_density_fun", "Distribution", choices = c("Discretized Exponential" = "dexp", 
-                                                    "Discretized Gamma" = "dgamma")),
-    verbatimTextOutput("pairwise_dist_optim_output")
+    )
   ),
   tabPanel("Network plot",
            visNetworkOutput("netplot"))
