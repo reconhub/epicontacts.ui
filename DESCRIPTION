@@ -13,6 +13,6 @@ Description: TBD
 License: GPL (>=2)
 LazyData: TRUE
 RoxygenNote: 6.0.1
-Imports: epicontacts, shiny, ggplot2, visNetwork, shinyjs
-Remote: reconhub/shinyHelpers
+Imports: epicontacts, shiny, ggplot2, visNetwork, shinyjs, lubridate
+Remote: reconhub/shinyHelpers, reconhub/distcrete
 VignetteBuilder: knitr
