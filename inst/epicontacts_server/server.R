@@ -186,4 +186,19 @@ shinyServer(function(input, output, session) {
       ggtitle(paste0("Boxplot pairwise distances of column '", column, "'")) + 
       ylab("value")
   })
+  
+  # degree
+  degree_result <- reactive({
+    get_degree(current_data(), 
+               type = input$degree_type,
+               only_linelist = input$degree_onlylinelist)
+  })
+  
+  output$degree_table <- renderPrint({
+    table(degree_result())
+  })
+  
+  output$degree_histogram <- renderPlot({
+    barplot(table(degree_result()), main = "Degree distribution")
+  })
 })

@@ -57,6 +57,14 @@ np <- navbarPage(
       textOutput("pairwise_sample_sd", inline = TRUE)
     )
   ),
+  tabPanel("Degree",
+    selectInput("degree_type", "Type of degree", selected = "out", 
+                choices = c("in", "out", "both")),
+    checkboxInput("degree_onlylinelist", "Use only linelist", value = FALSE),
+    hr(),
+    plotOutput("degree_histogram"),
+    p("Histrogram data"),
+    verbatimTextOutput("degree_table")),
   tabPanel("Network plot",
            visNetworkOutput("netplot"))
 )
