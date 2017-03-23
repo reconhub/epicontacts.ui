@@ -5,6 +5,10 @@ library(ggplot2)
 library(shinyHelpers)
 # based on the original shiny app in package epicontacts
 
+a <- function() {
+  print(as.list(parent.frame(n = 2)))
+}
+
 # a variable to quickload data during development
 dev <- FALSE
 
