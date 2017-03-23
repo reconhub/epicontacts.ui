@@ -19,7 +19,9 @@ np <- navbarPage(
              checkboxInput("subset_filter_data", "Enable subsetting", value = FALSE),
              uiOutput("ui1"),
              uiOutput("ui2"),
-             actionButton("subset", "Subset Data Based on Inputs Above"))
+             actionButton("subset", "Subset Data Based on Inputs Above"),
+             hr(),
+             verbatimTextOutput("summary_data"))
     )
   ),
   tabPanel("Linelist",

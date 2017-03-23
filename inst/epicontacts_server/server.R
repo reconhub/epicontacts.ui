@@ -69,6 +69,10 @@ shinyServer(function(input, output, session) {
     }
   })
   
+  output$summary_data <- renderPrint({
+    summary(current_data())
+  })
+  
   output$ui1 <- renderUI({
     # create list of attributes from linelist minus the id column
     dat <- base_data()$linelist
