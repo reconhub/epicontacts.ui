@@ -1,8 +1,9 @@
 library(shiny)
 library(visNetwork)
 library(shiny)
-navbarPage(
+np <- navbarPage(
   "EpiContacts.ui",
+  theme = "css/style.css",
   tabPanel(
     "Data",
     fluidRow(
@@ -59,3 +60,10 @@ navbarPage(
   tabPanel("Network plot",
            visNetworkOutput("netplot"))
 )
+#htmltools::tagAppendAttributes(np[[2]], class = paste0(htmltools::tagGetAttribute(np[[2]], "class"), 
+#                                                  "navbar-custom"))
+nav_element <- np[[3]][[1]]
+old_class <- htmltools::tagGetAttribute(nav_element, "class")
+np[[3]][[1]] <- htmltools::tagAppendAttributes(nav_element, 
+                                               class = "navbar-custom")
+np
