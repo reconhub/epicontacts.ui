@@ -28,7 +28,8 @@ recon.ui::reconNavbarPage("EpiContacts.ui",
                                 hr(),
                                 checkboxInput("subset_filter_data", "Enable subsetting", value = FALSE),
                                 uiOutput("ui2"),
-                                actionButton("subset", "Subset Data Based on Inputs Above")
+                                actionButton("subset", "Subset Data Based on Inputs Above"),
+                                class = "well"
                               ),
                               column(
                                 8,
