@@ -15,5 +15,5 @@ LazyData: TRUE
 RoxygenNote: 6.0.1
 Imports: epicontacts, shiny, ggplot2, visNetwork, shinyjs, lubridate, outbreaks
 Suggests: knitr
-Remote: reconhub/shinyHelpers, reconhub/distcrete
+Remote: reconhub/shinyHelpers, reconhub/recon.ui
 VignetteBuilder: knitr

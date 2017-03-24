@@ -1,8 +1,7 @@
 library(shiny)
 library(visNetwork)
 library(shiny)
-np <- navbarPage("EpiContacts.ui",
-                 theme = "css/style.css",
+np <- recon.ui::reconNavbarPage("EpiContacts.ui",
                  tabPanel("Data",
                           fluidRow(
                             column(
@@ -86,10 +85,3 @@ np <- navbarPage("EpiContacts.ui",
                      )
                    )
                  }))
-#htmltools::tagAppendAttributes(np[[2]], class = paste0(htmltools::tagGetAttribute(np[[2]], "class"),
-#                                                  "navbar-custom"))
-nav_element <- np[[3]][[1]]
-old_class <- htmltools::tagGetAttribute(nav_element, "class")
-np[[3]][[1]] <- htmltools::tagAppendAttributes(nav_element,
-                                               class = "navbar-custom")
-np
