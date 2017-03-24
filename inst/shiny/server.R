@@ -5,10 +5,6 @@ library(ggplot2)
 library(shinyHelpers)
 # based on the original shiny app in package epicontacts
 
-a <- function() {
-  print(as.list(parent.frame(n = 2)))
-}
-
 # a variable to quickload data during development
 dev <- FALSE
 
@@ -146,13 +142,8 @@ shinyServer(function(input, output, session) {
     }, colnames(base_data()$linelist)[-1]))
   })
   
-  observe({
-    updateSelectInput(session, "pairwise_dist_col",
-                      choices = valid_pairwise_cols())
-  })
-  
   pairwise_dist <- reactive({
-    column <- input$pairwise_dist_col
+    column <- input$interact
     is_valid_column <- column %in% valid_pairwise_cols()
     if (is_valid_column) {
       get_pairwise(current_data(), column)
@@ -165,7 +156,7 @@ shinyServer(function(input, output, session) {
   })
   
   output$pairwise_distribution_histogram <- renderPlot({
-    column <- input$pairwise_dist_col
+    column <- input$interact
     plot_data <- pairwise_plot_data()
     mean_dist <- mean(plot_data$value, na.rm = TRUE)
     p <- ggplot(plot_data, aes(value)) +
@@ -185,13 +176,15 @@ shinyServer(function(input, output, session) {
     sd(pairwise_dist(), na.rm = TRUE)
   })
   
-  output$pairwise_boxplot <- renderPlot({
-    column <- input$pairwise_dist_col
+  output$pairwise_rightplot <- renderPlot({
+    column <- input$interact
     plot_data <- pairwise_plot_data()
-    ggplot(plot_data, aes(value, value)) +
-      geom_boxplot() +
+    ggplot(plot_data, aes(value)) +
       xlab(column) +
-      ggtitle(paste0("Boxplot pairwise distances of column '", column, "'")) + 
+      geom_density(color = "red") +
+      geom_histogram(aes(y = ..density..), 
+                     alpha = 0.4, bins = input$pairwise_dist_histogram_bins) +
+      ggtitle(paste0("Density plot of pairwise distances of column '", column, "'")) + 
       ylab("value")
   })
   
