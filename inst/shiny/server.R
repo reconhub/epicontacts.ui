@@ -116,8 +116,7 @@ shinyServer(function(input, output, session) {
     req(input$interact)
     plot(current_data(),
          annot = TRUE,
-         editor = TRUE,
-         group = input$interact)
+         editor = TRUE)
     
   })
   
