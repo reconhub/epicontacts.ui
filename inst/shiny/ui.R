@@ -52,10 +52,8 @@ recon.ui::reconNavbarPage("EpiContacts.ui",
                                         value = 30
                                       )
                                     )),
-                                    fluidRow(column(
-                                      6, plotOutput("pairwise_distribution_histogram")
-                                    ),
-                                    column(6, plotOutput(
+                                    fluidRow(
+                                    column(12, plotOutput(
                                       "pairwise_rightplot"
                                     ))),
                                     hr(),

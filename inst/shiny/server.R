@@ -154,19 +154,6 @@ shinyServer(function(input, output, session) {
                stringsAsFactors = FALSE)
   })
   
-  output$pairwise_distribution_histogram <- renderPlot({
-    column <- input$interact
-    plot_data <- pairwise_plot_data()
-    mean_dist <- mean(plot_data$value, na.rm = TRUE)
-    p <- ggplot(plot_data, aes(value)) +
-      geom_vline(xintercept = mean_dist) + 
-      xlab(column) +
-      ggtitle(paste0("Histogram pairwise distances of column '", column, "'")) + 
-      ylab("value") +
-      geom_histogram(bins = input$pairwise_dist_histogram_bins)
-    p
-  })
-  
   output$pairwise_sample_mean <- renderText({
     mean(pairwise_dist(), na.rm = TRUE)
   })
