@@ -114,10 +114,10 @@ shinyServer(function(input, output, session) {
   
   output$netplot <- renderVisNetwork ({
     req(input$interact)
-    plot(current_data(),
-         annot = TRUE,
-         editor = TRUE)
-    
+    vis_epicontacts(current_data(), 
+                    annot = TRUE,
+                    editor = TRUE,
+                    group = input$interact)
   })
   
   output$linelisttab <- DT::renderDataTable ({
