@@ -14,9 +14,7 @@ recon.ui::reconNavbarPage("EpiContacts.ui",
                                      column(
                                        6,
                                        h3("Contact data"),
-                                       shinyHelpers::dataimportUI("import_contact_data", sampleDatasets = contacts_examples),
-                                       hr(),
-                                       verbatimTextOutput("summary_data")
+                                       shinyHelpers::dataimportUI("import_contact_data", sampleDatasets = contacts_examples)
                                      )
                                    )),
                           tabPanel("Analysis", {
@@ -34,6 +32,8 @@ recon.ui::reconNavbarPage("EpiContacts.ui",
                               column(
                                 8,
                                 tabsetPanel(
+                                  tabPanel("Summary",
+                                           verbatimTextOutput("summary_data")),
                                   tabPanel("Linelist",
                                            DT::dataTableOutput("linelisttab")),
                                   tabPanel("Contact List",
