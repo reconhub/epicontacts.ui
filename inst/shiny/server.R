@@ -240,6 +240,7 @@ shinyServer(function(input, output, session) {
                     node_color = node_color,
                     node_shape = node_shape,
                     edge_color = edge_color,
+                    edge_label = edge_label,
                     annot = annot,
                     label = label,
                     shapes = shapes)
