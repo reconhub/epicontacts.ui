@@ -41,7 +41,9 @@ recon.ui::reconNavbarPage(
         uiOutput("ui_edge_color"),
         uiOutput("ui_label"),
         uiOutput("ui_edge_label"),
-        uiOutput("ui_annot")
+        uiOutput("ui_annot"),
+        sliderInput("size", "Graphics size",
+                    min = 480, max = 2048, value = 800, step = 1)
       ),
       column(
         10,

@@ -37,8 +37,10 @@ guess_coltypes <- function(df) {
 
 shinyServer(function(input, output, session) {
 
-  linelist_data <- shinyHelpers::dataimportServer("import_linelist", sampleDatasets = linelist_examples)
-  contact_data <- shinyHelpers::dataimportServer("import_contact_data", sampleDatasets = contacts_examples)
+  linelist_data <- shinyHelpers::dataimportServer("import_linelist",
+                                                  sampleDatasets = linelist_examples)
+  contact_data <- shinyHelpers::dataimportServer("import_contact_data",
+                                                 sampleDatasets = contacts_examples)
 
   output$choose_id_column <- renderUI({
     dat <- linelist_data()
@@ -226,6 +228,7 @@ shinyServer(function(input, output, session) {
     edge_label <- if(input$edge_label == "[none]") NULL else input$edge_label
     annot <- if(length(input$annot) == 0L) NULL else input$annot
     label <- if(length(input$label) == 0L) NULL else input$label
+    size <- paste0(input$size, "px")
 
     if(input$node_shape == "[none]") {
       shapes <- NULL }
@@ -243,7 +246,9 @@ shinyServer(function(input, output, session) {
                     edge_label = edge_label,
                     annot = annot,
                     label = label,
-                    shapes = shapes)
+                    shapes = shapes,
+                    width = size,
+                    height = size)
   })
 
   output$linelisttab <- DT::renderDataTable ({
