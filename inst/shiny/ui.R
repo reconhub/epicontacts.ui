@@ -10,12 +10,15 @@ recon.ui::reconNavbarPage(
                h2("Load data"),
                h3("Linelist data"),
                shinyHelpers::dataimportUI("import_linelist", sampleDatasets = linelist_examples),
+               uiOutput("choose_id_column"),
                checkboxInput("directed", "Is This A Directed Network ?", value = TRUE)
              ),
              column(
                6,
                h3("Contact data"),
-               shinyHelpers::dataimportUI("import_contact_data", sampleDatasets = contacts_examples)
+               shinyHelpers::dataimportUI("import_contact_data", sampleDatasets = contacts_examples),
+               uiOutput("choose_from_column"),
+               uiOutput("choose_to_column")
              )
            )),
   tabPanel("Analysis", {

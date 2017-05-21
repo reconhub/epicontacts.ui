@@ -28,17 +28,62 @@ guess_coltypes <- function(df) {
   }
   df
 }
+
+
+
+
+
+
+
 shinyServer(function(input, output, session) {
 
   linelist_data <- shinyHelpers::dataimportServer("import_linelist", sampleDatasets = linelist_examples)
   contact_data <- shinyHelpers::dataimportServer("import_contact_data", sampleDatasets = contacts_examples)
+
+  output$choose_id_column <- renderUI({
+    dat <- linelist_data()
+    choices <- names(dat)
+    selectInput(
+      inputId = "id_column",
+      label = "Select ID column",
+      choices = choices,
+      selected = 1
+    )
+  })
+
+
+  output$choose_from_column <- renderUI({
+    dat <- contact_data()
+    choices <- names(dat)
+    selectInput(
+      inputId = "from_column",
+      label = "Select 'from' column",
+      choices = choices,
+      selected = choices[1]
+    )
+  })
+
+  output$choose_to_column <- renderUI({
+    dat <- contact_data()
+    choices <- names(dat)
+    selectInput(
+      inputId = "to_column",
+      label = "Select 'to' column",
+      choices = choices,
+      selected = choices[2]
+    )
+  })
+
 
   base_data <- reactive({
     linelist <- guess_coltypes(linelist_data())
     contacts <- guess_coltypes(contact_data())
     if (!is.null(linelist) && nrow(linelist) > 0 &&
         !is.null(contacts) && nrow(contacts) > 0) {
-      make_epicontacts(linelist, contacts, directed = input$directed)
+      make_epicontacts(linelist, contacts, directed = input$directed,
+                       id = input$id_column,
+                       from = input$from_column,
+                       to = input$to_column)
     } else if (dev) {
       make_epicontacts(outbreaks::mers_korea_2015$linelist, outbreaks::mers_korea_2015$contacts, directed = TRUE)
     }
