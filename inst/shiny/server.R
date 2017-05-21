@@ -84,13 +84,15 @@ shinyServer(function(input, output, session) {
   output$ui_node_color <- renderUI({
     dat <- base_data()$linelist
     choices <- c("[none]", names(dat))
-    selectInput("node_color", "Color nodes with", choices = choices)
+    selectInput("node_color", "Color nodes with",
+                choices = choices, selected = "[none]")
   })
 
   output$ui_edge_color <- renderUI({
     dat <- base_data()$contacts
     choices <- c("[none]", names(dat))
-    selectInput("edge_color", "Color edges with", choices = choices)
+    selectInput("edge_color", "Color edges with",
+                choices = choices, selected = "[none]")
   })
 
   output$ui_label <- renderUI({
@@ -104,7 +106,7 @@ shinyServer(function(input, output, session) {
     dat <- base_data()$contacts
     choices <- c("[none]", names(dat))
     selectInput("edge_label", "Label edges with",
-                choices = choices)
+                choices = choices, selected = "[none]")
   })
 
   output$ui_annot <- renderUI({
@@ -112,6 +114,29 @@ shinyServer(function(input, output, session) {
     choices <- names(dat)
     selectInput("annot", "Detailed annotations using",
                 choices = choices, multiple = TRUE)
+  })
+
+  output$ui_node_shape <- renderUI({
+    dat <- base_data()$linelist
+    choices <- c("[none]", names(dat))
+    selectInput("node_shape", "Shape nodes with",
+                choices = choices, selected = "[none]")
+  })
+
+
+  output$ui_shapes <- renderUI({
+    if (input$node_shape != "[none]"){
+      dat <- base_data()$linelist
+      values <- levels(factor(dat[, input$node_shape]))
+      values_txt <- paste(values, collapse = "\n")
+      title <- paste("Shapes for:", values_txt)
+      choices <- names(epicontacts::codeawesome)
+      selectInput("shapes", title,
+                  choices = choices,
+                  multiple = TRUE)
+    } else {
+      NULL
+    }
   })
 
   ## output$ui_filter <- renderUI({
@@ -148,17 +173,31 @@ shinyServer(function(input, output, session) {
 
   output$netplot <- renderVisNetwork ({
     ## req(input$interact)
+    ## req(input$update_plot)
+    x <- current_data()
     node_color <- if(input$node_color == "[none]") NULL else input$node_color
+    node_shape <- if(input$node_shape == "[none]") NULL else input$node_shape
     edge_color <- if(input$edge_color == "[none]") NULL else input$edge_color
     edge_label <- if(input$edge_label == "[none]") NULL else input$edge_label
     annot <- if(length(input$annot) == 0L) NULL else input$annot
     label <- if(length(input$label) == 0L) NULL else input$label
 
-    vis_epicontacts(current_data(),
+    if(input$node_shape == "[none]") {
+      shapes <- NULL }
+    else {
+      dat <- base_data()$linelist
+      shapes <- input$shapes
+      values <- levels(factor(dat[, input$node_shape]))
+      names(shapes) <- values
+    }
+
+    vis_epicontacts(x,
                     node_color = node_color,
+                    node_shape = node_shape,
                     edge_color = edge_color,
                     annot = annot,
-                    label = label)
+                    label = label,
+                    shapes = shapes)
   })
 
   output$linelisttab <- DT::renderDataTable ({

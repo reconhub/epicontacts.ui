@@ -21,7 +21,7 @@ recon.ui::reconNavbarPage(
   tabPanel("Analysis", {
     fluidRow(
       column(
-        3,
+        2,
         ## h2("Subset data"),
         ## uiOutput("ui_subset"),
         ## hr(),
@@ -29,15 +29,19 @@ recon.ui::reconNavbarPage(
         ## uiOutput("ui_filter"),
         ## actionButton("subset", "Subset Data Based on Inputs Above"),
         ## class = "well",
-        h2("Customise network plot"),
+        h2("Plot options"),
+        ## actionButton("update_plot", "Update plot"),
+        ## class = "well",
         uiOutput("ui_node_color"),
+        uiOutput("ui_node_shape"),
+        uiOutput("ui_shapes"),
         uiOutput("ui_edge_color"),
         uiOutput("ui_label"),
         uiOutput("ui_edge_label"),
         uiOutput("ui_annot")
       ),
       column(
-        9,
+        10,
         tabsetPanel(
           tabPanel("Summary",
                    verbatimTextOutput("summary_data")),
